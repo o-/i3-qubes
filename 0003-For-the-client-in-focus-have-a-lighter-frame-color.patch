@@ -1,7 +1,7 @@
 From f804d889944f772bad093e055eadd01b8f9daafe Mon Sep 17 00:00:00 2001
 From: o <o@immerda.ch>
 Date: Sat, 2 Apr 2016 21:46:45 +0200
-Subject: [PATCH 3/3] For the client in focus have a lighter frame color
+Subject: [PATCH 3/4] For the client in focus have a lighter frame color
 
 ---
  src/x.c | 101 ++++++++++++++++++++++++++++++++++++++++++----------------------

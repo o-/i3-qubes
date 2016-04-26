@@ -10,6 +10,7 @@ Patch0:		1d100d6e168d13752e79918f2410ccc7c492d700.patch
 Patch1:		i3-4.8.3-f20-qubes.patch
 Patch2:		0002-Bugfix-add-a-sync-call-to-i3bar-to-confirm-reparents.patch
 Patch3:		0003-For-the-client-in-focus-have-a-lighter-frame-color.patch
+Patch4:         0004-add-qubes-vm-to-i3_msg-tree.patch
 BuildRequires:  asciidoc
 BuildRequires:  bison
 BuildRequires:  flex
@@ -84,6 +85,7 @@ Asciidoc and doxygen generated documentations for %{name}.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 # TODO: Drop all /usr/bin/env lines.
 # TODO: Drop old dwarf 2 option in CFLAGS.

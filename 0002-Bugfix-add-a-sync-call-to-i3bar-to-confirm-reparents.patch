@@ -1,7 +1,7 @@
 From 7850a05061e22c171e39b2d159bd4f906912d0da Mon Sep 17 00:00:00 2001
 From: Michael Stapelberg <michael@stapelberg.de>
 Date: Thu, 24 Jul 2014 10:09:53 +0200
-Subject: [PATCH 2/3] Bugfix: add a sync call to i3bar to confirm reparents
+Subject: [PATCH 2/4] Bugfix: add a sync call to i3bar to confirm reparents
  before exiting
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
