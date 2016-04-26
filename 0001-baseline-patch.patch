@@ -1,16 +1,34 @@
-diff -uNr i3-4.8/include/atoms.xmacro i3-4.8p/include/atoms.xmacro
---- i3-4.8/include/atoms.xmacro	2014-06-15 19:12:43.000000000 +0200
-+++ i3-4.8p/include/atoms.xmacro	2016-02-07 01:58:49.357252192 +0100
-@@ -34,3 +34,5 @@
+From 5bc959f0e34d2257d36d4be96d774b66e0c2c93e Mon Sep 17 00:00:00 2001
+From: o <o@immerda.ch>
+Date: Sat, 2 Apr 2016 21:45:25 +0200
+Subject: [PATCH 1/4] baseline patch
+
+---
+ include/atoms.xmacro |  2 ++
+ include/data.h       |  6 ++++++
+ include/window.h     | 14 +++++++++++++
+ src/commands.c       | 18 ++++++++---------
+ src/config.c         |  6 ++++++
+ src/manage.c         |  6 +++++-
+ src/window.c         | 51 +++++++++++++++++++++++++++++++++++++++++++++++
+ src/x.c              | 56 +++++++++++++++++++++++++++++++++++++++++++---------
+ 8 files changed, 139 insertions(+), 20 deletions(-)
+
+diff --git a/include/atoms.xmacro b/include/atoms.xmacro
+index 90b0261..bbff477 100644
+--- a/include/atoms.xmacro
++++ b/include/atoms.xmacro
+@@ -34,3 +34,5 @@ xmacro(I3_PID)
  xmacro(_NET_REQUEST_FRAME_EXTENTS)
  xmacro(_NET_FRAME_EXTENTS)
  xmacro(_MOTIF_WM_HINTS)
 +xmacro(_QUBES_VMNAME)
 +xmacro(_QUBES_LABEL)
-diff -uNr i3-4.8/include/data.h i3-4.8p/include/data.h
---- i3-4.8/include/data.h	2014-06-15 19:12:43.000000000 +0200
-+++ i3-4.8p/include/data.h	2016-02-07 01:58:49.358252192 +0100
-@@ -348,6 +348,12 @@
+diff --git a/include/data.h b/include/data.h
+index 6ac228e..43cd8de 100644
+--- a/include/data.h
++++ b/include/data.h
+@@ -348,6 +348,12 @@ struct Window {
      /** The name of the window. */
      i3String *name;
  
@@ -23,10 +41,11 @@ diff -uNr i3-4.8/include/data.h i3-4.8p/include/data.h
      /** The WM_WINDOW_ROLE of this window (for example, the pidgin buddy window
       * sets "buddy list"). Useful to match specific windows in assignments or
       * for_window. */
-diff -uNr i3-4.8/include/window.h i3-4.8p/include/window.h
---- i3-4.8/include/window.h	2014-06-15 19:12:43.000000000 +0200
-+++ i3-4.8p/include/window.h	2016-02-07 01:58:49.359252192 +0100
-@@ -33,6 +33,20 @@
+diff --git a/include/window.h b/include/window.h
+index 480cee1..b8d50b3 100644
+--- a/include/window.h
++++ b/include/window.h
+@@ -33,6 +33,20 @@ void window_update_name(i3Window *win, xcb_get_property_reply_t *prop, bool befo
  void window_update_name_legacy(i3Window *win, xcb_get_property_reply_t *prop, bool before_mgmt);
  
  /**
@@ -47,10 +66,11 @@ diff -uNr i3-4.8/include/window.h i3-4.8p/include/window.h
   * Updates the CLIENT_LEADER (logical parent window).
   *
   */
-diff -uNr i3-4.8/src/commands.c i3-4.8p/src/commands.c
---- i3-4.8/src/commands.c	2014-06-15 19:12:43.000000000 +0200
-+++ i3-4.8p/src/commands.c	2016-02-07 01:58:49.360252192 +0100
-@@ -837,22 +837,20 @@
+diff --git a/src/commands.c b/src/commands.c
+index 03bb10a..1e257e8 100644
+--- a/src/commands.c
++++ b/src/commands.c
+@@ -837,22 +837,20 @@ void cmd_border(I3_CMD, char *border_style_str, char *border_width) {
              border_style++;
              border_style %= 3;
              if (border_style == BS_NORMAL)
@@ -81,10 +101,11 @@ diff -uNr i3-4.8/src/commands.c i3-4.8p/src/commands.c
                  ELOG("BUG: called with border_style=%s\n", border_style_str);
                  ysuccess(false);
                  return;
-diff -uNr i3-4.8/src/config.c i3-4.8p/src/config.c
---- i3-4.8/src/config.c	2014-06-15 19:12:43.000000000 +0200
-+++ i3-4.8p/src/config.c	2016-02-07 01:58:49.361252192 +0100
-@@ -264,6 +264,12 @@
+diff --git a/src/config.c b/src/config.c
+index 7e88a9e..a2735ca 100644
+--- a/src/config.c
++++ b/src/config.c
+@@ -264,6 +264,12 @@ void load_configuration(xcb_connection_t *conn, const char *override_configpath,
  
      parse_configuration(override_configpath);
  
@@ -97,10 +118,11 @@ diff -uNr i3-4.8/src/config.c i3-4.8p/src/config.c
      if (reload) {
          translate_keysyms();
          grab_all_keys(conn, false);
-diff -uNr i3-4.8/src/manage.c i3-4.8p/src/manage.c
---- i3-4.8/src/manage.c	2014-06-15 19:12:43.000000000 +0200
-+++ i3-4.8p/src/manage.c	2016-02-07 01:58:49.362252192 +0100
-@@ -87,7 +87,7 @@
+diff --git a/src/manage.c b/src/manage.c
+index 8f442e0..c236e68 100644
+--- a/src/manage.c
++++ b/src/manage.c
+@@ -87,7 +87,7 @@ void manage_window(xcb_window_t window, xcb_get_window_attributes_cookie_t cooki
      xcb_get_window_attributes_reply_t *attr = NULL;
  
      xcb_get_property_cookie_t wm_type_cookie, strut_cookie, state_cookie,
@@ -109,7 +131,7 @@ diff -uNr i3-4.8/src/manage.c i3-4.8p/src/manage.c
          class_cookie, leader_cookie, transient_cookie,
          role_cookie, startup_id_cookie, wm_hints_cookie,
          wm_normal_hints_cookie, motif_wm_hints_cookie;
-@@ -152,6 +152,8 @@
+@@ -152,6 +152,8 @@ void manage_window(xcb_window_t window, xcb_get_window_attributes_cookie_t cooki
      strut_cookie = GET_PROPERTY(A__NET_WM_STRUT_PARTIAL, UINT32_MAX);
      state_cookie = GET_PROPERTY(A__NET_WM_STATE, UINT32_MAX);
      utf8_title_cookie = GET_PROPERTY(A__NET_WM_NAME, 128);
@@ -118,7 +140,7 @@ diff -uNr i3-4.8/src/manage.c i3-4.8p/src/manage.c
      leader_cookie = GET_PROPERTY(A_WM_CLIENT_LEADER, UINT32_MAX);
      transient_cookie = GET_PROPERTY(XCB_ATOM_WM_TRANSIENT_FOR, UINT32_MAX);
      title_cookie = GET_PROPERTY(XCB_ATOM_WM_NAME, 128);
-@@ -188,6 +190,8 @@
+@@ -188,6 +190,8 @@ void manage_window(xcb_window_t window, xcb_get_window_attributes_cookie_t cooki
      window_update_class(cwindow, xcb_get_property_reply(conn, class_cookie, NULL), true);
      window_update_name_legacy(cwindow, xcb_get_property_reply(conn, title_cookie, NULL), true);
      window_update_name(cwindow, xcb_get_property_reply(conn, utf8_title_cookie, NULL), true);
@@ -127,10 +149,11 @@ diff -uNr i3-4.8/src/manage.c i3-4.8p/src/manage.c
      window_update_leader(cwindow, xcb_get_property_reply(conn, leader_cookie, NULL));
      window_update_transient_for(cwindow, xcb_get_property_reply(conn, transient_cookie, NULL));
      window_update_strut_partial(cwindow, xcb_get_property_reply(conn, strut_cookie, NULL));
-diff -uNr i3-4.8/src/window.c i3-4.8p/src/window.c
---- i3-4.8/src/window.c	2014-06-15 19:12:43.000000000 +0200
-+++ i3-4.8p/src/window.c	2016-02-07 01:58:49.363252192 +0100
-@@ -120,6 +120,57 @@
+diff --git a/src/window.c b/src/window.c
+index 538f462..5c18219 100644
+--- a/src/window.c
++++ b/src/window.c
+@@ -120,6 +120,57 @@ void window_update_name_legacy(i3Window *win, xcb_get_property_reply_t *prop, bo
  }
  
  /*
@@ -188,10 +211,11 @@ diff -uNr i3-4.8/src/window.c i3-4.8p/src/window.c
   * Updates the CLIENT_LEADER (logical parent window).
   *
   */
-diff -uNr i3-4.8/src/x.c i3-4.8p/src/x.c
---- i3-4.8/src/x.c	2014-06-15 19:12:43.000000000 +0200
-+++ i3-4.8p/src/x.c	2016-02-26 22:50:39.452566636 +0100
-@@ -341,10 +341,10 @@
+diff --git a/src/x.c b/src/x.c
+index ee638fc..89a0eff 100644
+--- a/src/x.c
++++ b/src/x.c
+@@ -341,10 +341,10 @@ void x_draw_decoration(Con *con) {
      /* find out which colors to use */
      if (con->urgent)
          p->color = &config.client.urgent;
@@ -206,7 +230,7 @@ diff -uNr i3-4.8/src/x.c i3-4.8p/src/x.c
      else
          p->color = &config.client.unfocused;
  
-@@ -407,6 +407,39 @@
+@@ -407,6 +407,39 @@ void x_draw_decoration(Con *con) {
          xcb_poly_fill_rectangle(conn, con->pixmap, con->pm_gc, sizeof(background) / sizeof(xcb_rectangle_t), background);
      }
  
@@ -246,7 +270,7 @@ diff -uNr i3-4.8/src/x.c i3-4.8p/src/x.c
      /* 3: draw a rectangle in border color around the client */
      if (p->border_style != BS_NONE && p->con_is_leaf) {
          /* We might hide some borders adjacent to the screen-edge */
-@@ -492,7 +525,6 @@
+@@ -492,7 +525,6 @@ void x_draw_decoration(Con *con) {
      set_font_colors(parent->pm_gc, p->color->text, p->color->background);
      int text_offset_y = (con->deco_rect.height - config.font.height) / 2;
  
@@ -254,7 +278,7 @@ diff -uNr i3-4.8/src/x.c i3-4.8p/src/x.c
      if (win == NULL) {
          /* we have a split container which gets a representation
           * of its children as title
-@@ -531,10 +563,16 @@
+@@ -531,10 +563,16 @@ void x_draw_decoration(Con *con) {
      //DLOG("indent_level = %d, indent_mult = %d\n", indent_level, indent_mult);
      int indent_px = (indent_level * 5) * indent_mult;
  
@@ -275,3 +299,6 @@ diff -uNr i3-4.8/src/x.c i3-4.8p/src/x.c
  
  after_title:
      /* Since we don’t clip the text at all, it might in some cases be painted
+-- 
+2.5.5
+

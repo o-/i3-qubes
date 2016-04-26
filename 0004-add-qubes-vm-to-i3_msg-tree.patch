@@ -1,0 +1,25 @@
+From 96ecd5e461145a6e6e18be3a817c1752c5132dea Mon Sep 17 00:00:00 2001
+From: o <o@immerda.ch>
+Date: Tue, 26 Apr 2016 17:57:07 +0200
+Subject: [PATCH 4/4] add qubes vm to i3_msg tree
+
+---
+ src/ipc.c | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/src/ipc.c b/src/ipc.c
+index 0f3dcd8..5318b24 100644
+--- a/src/ipc.c
++++ b/src/ipc.c
+@@ -336,6 +336,8 @@ void dump_node(yajl_gen gen, struct Con *con, bool inplace_restart) {
+             ystr("title");
+             ystr(i3string_as_utf8(con->window->name));
+         }
++        ystr("qubes_vmname");
++        ystr(i3string_as_utf8(con->window->qubes_vmname));
+ 
+         y(map_close);
+     }
+-- 
+2.5.5
+
